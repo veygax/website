@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Sections
 import ProfileSection from "@/components/profile-section";
@@ -17,13 +18,22 @@ import {
 } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io5";
 import { AiOutlineDotNet } from "react-icons/ai";
-import { Briefcase, ContactRound, Code } from "lucide-react";
+import { FaVrCardboard } from "react-icons/fa";
+import { Briefcase, ContactRound, Code, Heart } from "lucide-react";
+import { TbLambda } from "react-icons/tb";
 
 export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (!isMounted) {
@@ -99,22 +109,61 @@ export default function Home() {
     },
   ];
 
+  const hobbies = [
+    {
+      name: "Half-Life",
+      description: "",
+      icon: TbLambda,
+      url: "https://www.half-life.com/en/home/",
+    },
+    {
+      name: "VR",
+      description: "",
+      icon: FaVrCardboard,
+      url: "https://store.steampowered.com/app/250820/SteamVR",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
-      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="md:flex">
+      <div
+        className={`w-full max-w-6xl mx-auto bg-white rounded-lg shadow-md ${
+          isMobile ? "overflow-y-auto max-h-[80vh]" : "overflow-hidden"
+        }`}
+        style={{
+          marginTop: "5vh",
+          marginBottom: "5vh",
+        }}
+      >
+        <div
+          className={`flex ${isMobile ? "flex-col" : "flex-col md:flex-row"}`}
+        >
           <ProfileSection />
-          <Separator orientation="vertical" className="hidden md:block" />
-          <div className="md:w-2/3 p-6">
+          <Separator
+            orientation="horizontal"
+            className={`block ${isMobile ? "my-4" : "md:hidden my-4"}`}
+          />
+          <Separator
+            orientation="vertical"
+            className={`hidden ${isMobile ? "" : "md:block"}`}
+          />
+          <ScrollArea
+            className={`w-full ${
+              isMobile
+                ? "p-4 sm:p-6 overflow-y-auto max-h-[60vh]"
+                : "md:w-2/3 p-4 sm:p-6 overflow-y-auto max-h-[60vh]"
+            }`}
+          >
             <Section title="Skills" icon={Code} items={skills} />
             <Section
               title="Projects"
               icon={Briefcase}
               items={projects}
-              cardWidth="w-[250px]"
+              cardWidth="w-[200px] sm:w-[250px]"
             />
             <Section title="Socials" icon={ContactRound} items={socials} />
-          </div>
+            <Section title="Things I enjoy" icon={Heart} items={hobbies} />
+          </ScrollArea>
         </div>
       </div>
     </div>
