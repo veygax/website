@@ -18,8 +18,8 @@ export default function ProfileSection() {
         <div>
           <h1 className="text-3xl font-bold mb-4 text-gray-800">About Me</h1>
           <p className="text-gray-600 mb-4">
-            I'm a semi-experienced full stack developer who mostly develops for
-            fun.
+            I&apos;m a semi-experienced full stack developer who mostly develops
+            for fun.
           </p>
           <p className="text-gray-600">
             Outside of coding, I spend my time playing games and such.

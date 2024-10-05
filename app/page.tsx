@@ -21,6 +21,8 @@ import { AiOutlineDotNet } from "react-icons/ai";
 import { FaVrCardboard } from "react-icons/fa";
 import { Briefcase, ContactRound, Code, Heart } from "lucide-react";
 import { TbLambda } from "react-icons/tb";
+import { MdEdit } from "react-icons/md";
+import { SiValve } from "react-icons/si";
 
 export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
@@ -112,15 +114,27 @@ export default function Home() {
   const hobbies = [
     {
       name: "Half-Life",
-      description: "",
+      description: '"Why do we have to wear these ridiculous ties?"',
       icon: TbLambda,
       url: "https://www.half-life.com/en/home/",
     },
     {
       name: "VR",
-      description: "",
+      description: "VR is awesome.",
       icon: FaVrCardboard,
       url: "https://store.steampowered.com/app/250820/SteamVR",
+    },
+    {
+      name: "Modding",
+      description: "I like messing with games.",
+      icon: MdEdit,
+      url: "https://melonwiki.xyz/",
+    },
+    {
+      name: "Valve",
+      description: "I like Valve :)",
+      icon: SiValve,
+      url: "https://www.valvesoftware.com/en/",
     },
   ];
 
@@ -162,7 +176,7 @@ export default function Home() {
               cardWidth="w-[200px] sm:w-[250px]"
             />
             <Section title="Socials" icon={ContactRound} items={socials} />
-            <Section title="Things I enjoy" icon={Heart} items={hobbies} />
+            <Section title="Things I like" icon={Heart} items={hobbies} />
           </ScrollArea>
         </div>
       </div>
