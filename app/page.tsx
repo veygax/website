@@ -53,16 +53,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 p-4 flex items-center justify-center">
       <div className="w-full max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="flex flex-col lg:flex-row">
-          <ProfileSection />
-          <Separator orientation="horizontal" className="block lg:hidden my-4" />
-          <Separator orientation="vertical" className="hidden lg:block" />
-          <ScrollArea className="w-full lg:w-2/3 p-4 overflow-y-auto max-h-[60vh] lg:max-h-[80vh]">
+        <div className="flex flex-col md:flex-row">
+          <ScrollArea className="w-full md:w-2/3 p-4 overflow-y-auto max-h-[60vh] md:max-h-[80vh] order-2 md:order-1">
             <Section title="Skills" icon={Code} items={skills} />
             <Section title="Projects" icon={Briefcase} items={projects} cardWidth="w-full sm:w-[250px]" />
             <Section title="Socials" icon={ContactRound} items={socials} />
             <Section title="Things I like" icon={Heart} items={hobbies} />
           </ScrollArea>
+          <Separator orientation="horizontal" className="block md:hidden my-4 order-3" />
+          <Separator orientation="vertical" className="hidden md:block order-2" />
+          <ProfileSection />
         </div>
       </div>
     </div>
