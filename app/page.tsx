@@ -9,7 +9,7 @@ import { IoLogoJavascript } from "react-icons/io5"
 import { FaReact, FaNodeJs, FaPython, FaDiscord, FaReddit, FaVrCardboard } from "react-icons/fa"
 import { AiOutlineDotNet } from "react-icons/ai"
 import { Briefcase, ContactRound, Code, Heart } from "lucide-react"
-import { TbLambda } from "react-icons/tb"
+import { TbBrandCpp, TbLambda } from "react-icons/tb"
 import { MdEdit } from "react-icons/md"
 import { SiValve } from "react-icons/si"
 
@@ -30,10 +30,12 @@ export default function Home() {
     { name: "Node.js", icon: FaNodeJs, description: "", url: "https://nodejs.org/" },
     { name: "Python", icon: FaPython, description: "", url: "https://www.python.org/" },
     { name: "C#/.NET", icon: AiOutlineDotNet, description: "", url: "https://dotnet.microsoft.com/en-us/" },
+    { name: "C++", icon: TbBrandCpp, description: "", url: "https://www.learncpp.com/" },
   ]
 
   const projects = [
     { name: "UEditor", description: "An easy way to mod Unreal Engine games.", icon: "/UEditor Logo Black.svg", url: "https://ueditor.lol" },
+    { name: "Case Clicker 2 Save Editor", description: "to pretend you have good luck 👍😉", icon: "/cc2saveeditor.png", url: "https://cc2save.veygax.dev" },
     { name: "DeckXP", description: "Provides the best way to use Windows on Steam Deck.", icon: "/deckxp-icon-1024.png", url: "https://github.com/veygax/DeckXP" },
     { name: "This website!", description: "The one your viewing right now!", icon: "https://placeholder.pics/svg/200", url: "https://veygax.dev" },
   ]
