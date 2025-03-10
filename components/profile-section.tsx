@@ -18,10 +18,10 @@ export default function ProfileSection() {
         <div>
           <h1 className="text-2xl lg:text-3xl font-bold mb-2 lg:mb-4 text-gray-800">About Me</h1>
           <p className="text-sm lg:text-base text-gray-600 mb-2 lg:mb-4">
-            I&apos;m a semi-experienced full stack developer who mostly develops for fun.
+            i like making things
           </p>
           <p className="text-sm lg:text-base text-gray-600">
-            Outside of coding, I spend my time playing games and such.
+            gaming is fun too
           </p>
         </div>
       </ScrollArea>
