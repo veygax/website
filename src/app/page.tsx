@@ -1,103 +1,105 @@
+"use client"
+
 import Image from "next/image";
+import { useXTerm } from 'react-xtermjs'
+import { useEffect, useRef } from 'react'
+import { FitAddon } from '@xterm/addon-fit';
+import { WebLinksAddon } from '@xterm/addon-web-links';
+import { handleCommand, navigateHistory } from '@/utils/commands';
 
-export default function Home() {
+const PROMPT = 'veyga@archlinux ~ # ';
+
+export default function IndexPage() {
+  
+  const currentLineRef = useRef('');
+  const cursorPosRef = useRef(0);
+  const { instance, ref } = useXTerm();
+
+  useEffect(() => {
+      if (instance) {
+        instance.write('\r\n' + PROMPT);
+        
+        const fitAddon = new FitAddon();
+        const webLinksAddon = new WebLinksAddon();
+        instance.loadAddon(webLinksAddon);
+        instance.loadAddon(fitAddon);
+        fitAddon.fit();
+        
+        instance.onData(async (data) => {
+          const key = data.charCodeAt(0);
+          
+          if (data === '\x1b[A') { // Up arrow
+            const historyCommand = navigateHistory('up', currentLineRef.current);
+            // Clear current line
+            instance.write('\x1b[2K\r' + PROMPT);
+            currentLineRef.current = historyCommand;
+            cursorPosRef.current = historyCommand.length;
+            instance.write(historyCommand);
+          } 
+          else if (data === '\x1b[B') { // Down arrow
+            const historyCommand = navigateHistory('down', currentLineRef.current);
+            // Clear current line
+            instance.write('\x1b[2K\r' + PROMPT);
+            currentLineRef.current = historyCommand;
+            cursorPosRef.current = historyCommand.length;
+            instance.write(historyCommand);
+          }
+          else if (data === '\x1b[C') { // Right arrow
+            if (cursorPosRef.current < currentLineRef.current.length) {
+              cursorPosRef.current++;
+              instance.write(data);
+            }
+          }
+          else if (data === '\x1b[D') { // Left arrow
+            if (cursorPosRef.current > 0) {
+              cursorPosRef.current--;
+              instance.write(data);
+            }
+          }
+          else if (data === '\r') { // Enter key
+            const command = currentLineRef.current.trim();
+            currentLineRef.current = '';
+            cursorPosRef.current = 0;
+            await handleCommand(command, instance, PROMPT);
+          } else if (data === '\x7F') { // Backspace character
+            if (cursorPosRef.current > 0) {
+              const before = currentLineRef.current.substring(0, cursorPosRef.current - 1);
+              const after = currentLineRef.current.substring(cursorPosRef.current);
+              currentLineRef.current = before + after;
+              cursorPosRef.current--;
+              
+              // Redraw the line
+              instance.write('\x1b[2K\r' + PROMPT + currentLineRef.current);
+              
+              // Move cursor to correct position
+              if (cursorPosRef.current < currentLineRef.current.length) {
+                instance.write(`\x1b[${PROMPT.length + cursorPosRef.current}G`);
+              }
+            }
+          } else if (!data.startsWith('\x1b')) { // Ignore other escape sequences
+            const before = currentLineRef.current.substring(0, cursorPosRef.current);
+            const after = currentLineRef.current.substring(cursorPosRef.current);
+            currentLineRef.current = before + data + after;
+            cursorPosRef.current += data.length;
+            
+            // Redraw the line
+            instance.write('\x1b[2K\r' + PROMPT + currentLineRef.current);
+            
+            // Move cursor to correct position
+            if (cursorPosRef.current < currentLineRef.current.length) {
+              instance.write(`\x1b[${PROMPT.length + cursorPosRef.current}G`);
+            }
+          }
+        });
+      }
+
+  }, [instance]); 
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div className="flex flex-col h-screen w-screen bg-gray-100 overflow-hidden">
+      <div className="flex-1 h-full overflow-hidden">
+        <div ref={ref} className="h-full w-full overflow-hidden" />
+      </div>
     </div>
   );
 }

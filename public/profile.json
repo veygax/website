@@ -1,0 +1,43 @@
+{
+    "projects": [
+      {
+        "name": "Personal Website",
+        "description": "guess what you're reading this on",
+        "technologies": ["Next.js", "TypeScript", "Tailwind CSS"],
+        "url": "https://veygax.dev"
+      },
+      {
+        "name": "UnlockedEditor",
+        "description": "easy access to modding and an in-game unreal-style editor",
+        "technologies": ["C#", "Unreal Engine", "C++", "Node.js"],
+        "url": "https://unlockededitor.com"
+      },
+      {
+        "name": "Case Clicker 2 Save Editor",
+        "description": "edit your case clicker 2 save file",
+        "technologies": ["Node.js", "Next.js", "React"],
+        "url": "https://cc2save.veygax.dev"
+      }
+    ],
+    "skills": [
+      {
+        "category": "Programming Languages",
+        "items": ["Rust", "TypeScript", "Python", "C++", "C#"]
+      },
+      {
+        "category": "Web Technologies",
+        "items": ["React", "Node.js", "WebAssembly", "Next.js"]
+      },
+      {
+        "category": "Tools & Platforms",
+        "items": ["Git", "Linux", "Unreal Engine", "I LOVE MAKING INTERNAL TOOLS"]
+      }
+    ],
+    "things_i_like": [
+      "Half-Life",
+      "VR",
+      "Modding", 
+      "Valve",
+      "Arch Linux"
+    ]
+  } 
