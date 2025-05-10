@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       output,
       success: true
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       output: "Error processing command",
       success: false

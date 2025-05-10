@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image";
 import { useXTerm } from 'react-xtermjs'
 import { useEffect, useRef } from 'react'
 import { FitAddon } from '@xterm/addon-fit';
@@ -26,7 +25,6 @@ export default function IndexPage() {
         fitAddon.fit();
         
         instance.onData(async (data) => {
-          const key = data.charCodeAt(0);
           
           if (data === '\x1b[A') { // Up arrow
             const historyCommand = navigateHistory('up', currentLineRef.current);

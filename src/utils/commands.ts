@@ -1,15 +1,13 @@
+import { type Terminal } from '@xterm/xterm';
+
 interface Command {
     name: string;
     description: string;
     aliases?: string[];
-    execute: (terminal: any, args?: string[]) => Promise<void>;
+    execute: (terminal: Terminal, args?: string[]) => Promise<void>;
   }
   
-  const writePrompt = (terminal: any, prompt: string): void => {
-    terminal.write('\r\n' + prompt);
-  };
-  
-  let commandHistory: string[] = [];
+  const commandHistory: string[] = [];
   let historyPosition = -1;
   let tempCommand = '';
   
@@ -50,7 +48,7 @@ interface Command {
       name: 'clear',
       description: 'clear the terminal screen',
       aliases: ['cls'],
-      execute: async (terminal, args = []) => {
+      execute: async (terminal) => {
         terminal.reset();
       }
     },
@@ -83,7 +81,7 @@ interface Command {
       name: 'help',
       description: 'list available commands',
       aliases: ['?'],
-      execute: async (terminal, args = []) => {
+      execute: async (terminal) => {
         terminal.writeln('\r\nAvailable commands:');
         Object.values(commands).forEach(cmd => {
           const aliasText = cmd.aliases?.length ? ` (${cmd.aliases.join(', ')})` : '';
@@ -94,7 +92,7 @@ interface Command {
     history: {
       name: 'history',
       description: 'display command history',
-      execute: async (terminal, args = []) => {
+      execute: async (terminal) => {
         if (commandHistory.length === 0) {
           terminal.writeln('\r\nNo command history');
         } else {
@@ -108,7 +106,7 @@ interface Command {
     'backend': {
       name: 'backend',
       description: 'interact with backend services',
-      execute: async (terminal, args = []) => {
+      execute: async () => {
         // this should never run
         return;
       }
@@ -127,7 +125,7 @@ interface Command {
     success: boolean;
   }
   
-  export const handleCommand = async (command: string, terminal: any, prompt: string): Promise<boolean> => {
+  export const handleCommand = async (command: string, terminal: Terminal, prompt: string): Promise<boolean> => {
     try {
       // Add valid command to history
       if (command.trim() !== '') {

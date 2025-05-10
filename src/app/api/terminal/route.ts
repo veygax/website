@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
         success: false
       });
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       output: "Error processing command",
       success: false
