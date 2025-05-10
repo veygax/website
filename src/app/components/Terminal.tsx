@@ -4,12 +4,13 @@ import { useXTerm } from 'react-xtermjs'
 import { useEffect, RefObject } from 'react'
 import { FitAddon } from '@xterm/addon-fit';
 import { WebLinksAddon } from '@xterm/addon-web-links';
+import { type Terminal as TerminalType } from '@xterm/xterm';
 
 interface TerminalProps {
   prompt: string;
   currentLineRef: RefObject<string>;
   cursorPosRef: RefObject<number>;
-  handleCommand: (command: string, terminal: any, prompt: string) => Promise<boolean>;
+  handleCommand: (command: string, terminal: TerminalType, prompt: string) => Promise<boolean>;
   navigateHistory: (direction: 'up' | 'down', currentInput: string) => string;
 }
 
@@ -98,7 +99,7 @@ export default function Terminal({
         }
       });
     }
-  }, [instance, prompt, handleCommand, navigateHistory]);
+  }, [instance, prompt, handleCommand, navigateHistory, currentLineRef, cursorPosRef]);
 
   return <div ref={ref} className="h-full w-full overflow-hidden" />;
 } 
