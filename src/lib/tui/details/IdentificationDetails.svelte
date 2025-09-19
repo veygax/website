@@ -30,7 +30,8 @@
 		</div>
 		<div>
 			<span class="text-neutral-500">ssh key:</span>
-			<code class="ml-2 rounded bg-neutral-900 px-1 py-0.5 text-[11px] text-emerald-400"
+			<code
+				class="ml-2 block max-w-full rounded bg-neutral-900 px-1 py-0.5 text-[11px] break-all text-emerald-400"
 				>{meta?.sshKey ?? '—'}</code
 			>
 		</div>

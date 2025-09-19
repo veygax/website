@@ -5,3 +5,19 @@
 a[rel="me"][href="https://infosec.exchange/@veygax"] {
   display: none;
 }
+
+/* Ensure full-viewport black background and remove default margins */
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  background-color: rgb(10 10 10);
+  /* Tailwind neutral-950 */
+}
+
+/* Mobile viewport units to avoid white bars on some browsers */
+body {
+  min-height: 100svh;
+  /* small viewport height for mobile chrome/safari */
+}
