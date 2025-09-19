@@ -1,26 +1,11 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import type { TuiConfig } from '$lib/tui/types';
+	import { tuiConfig } from '$lib/tui/config';
 
-	type Tab = 'Overview' | 'Playlists' | 'Following' | 'Settings';
+	let config: TuiConfig = tuiConfig;
 
-	let tabs: Tab[] = ['Overview', 'Playlists', 'Following', 'Settings'];
 	let activeTabIndex = 0;
-
-	let items: Record<Tab, string[]> = {
-		Overview: ['Recently Played', 'Top Artists', 'Top Tracks', 'Listening Time'],
-		Playlists: [
-			'Deep Focus',
-			'Coding Mode',
-			'Jazz Vibes',
-			'Synthwave Runner',
-			'Lo-Fi Beats',
-			'Ambient Study',
-			'Piano Chill'
-		],
-		Following: ['@alice', '@bob', '@carol', '@dave', '@eve', '@mallory'],
-		Settings: ['Profile', 'Appearance', 'Shortcuts', 'About']
-	};
-
 	let selectedIndex = 0;
 	let focusColumn: 'tabs' | 'list' | 'details' = 'tabs';
 
@@ -50,14 +35,11 @@
 			case 'ArrowUp':
 			case 'k': {
 				if (focusColumn === 'tabs') {
-					activeTabIndex = clamp(activeTabIndex - 1, 0, tabs.length - 1);
+					activeTabIndex = clamp(activeTabIndex - 1, 0, config.tabs.length - 1);
 					selectedIndex = 0;
 				} else if (focusColumn === 'list') {
-					selectedIndex = clamp(
-						selectedIndex - 1,
-						0,
-						(items[tabs[activeTabIndex]]?.length ?? 1) - 1
-					);
+					const items = config.tabs[activeTabIndex]?.items ?? [];
+					selectedIndex = clamp(selectedIndex - 1, 0, items.length - 1);
 				}
 				e.preventDefault();
 				break;
@@ -65,14 +47,11 @@
 			case 'ArrowDown':
 			case 'j': {
 				if (focusColumn === 'tabs') {
-					activeTabIndex = clamp(activeTabIndex + 1, 0, tabs.length - 1);
+					activeTabIndex = clamp(activeTabIndex + 1, 0, config.tabs.length - 1);
 					selectedIndex = 0;
 				} else if (focusColumn === 'list') {
-					selectedIndex = clamp(
-						selectedIndex + 1,
-						0,
-						(items[tabs[activeTabIndex]]?.length ?? 1) - 1
-					);
+					const items = config.tabs[activeTabIndex]?.items ?? [];
+					selectedIndex = clamp(selectedIndex + 1, 0, items.length - 1);
 				}
 				e.preventDefault();
 				break;
@@ -94,7 +73,8 @@
 				break;
 			}
 			case 'G': {
-				if (focusColumn === 'list') selectedIndex = (items[tabs[activeTabIndex]]?.length ?? 1) - 1;
+				const items = config.tabs[activeTabIndex]?.items ?? [];
+				if (focusColumn === 'list') selectedIndex = Math.max(0, items.length - 1);
 				e.preventDefault();
 				break;
 			}
@@ -134,7 +114,7 @@
 						Sections
 					</div>
 					<ul>
-						{#each tabs as tab, i}
+						{#each config.tabs as tab, i}
 							<li
 								class="border-b border-neutral-800 last:border-b-0"
 								class:bg-neutral-800={i === activeTabIndex}
@@ -150,7 +130,7 @@
 									}}
 								>
 									{i === activeTabIndex ? '▸ ' : '  '}
-									{tab}
+									{tab.label}
 								</button>
 							</li>
 						{/each}
@@ -164,12 +144,12 @@
 					<div
 						class="flex items-center justify-between border-b border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-400"
 					>
-						<span>{tabs[activeTabIndex]}</span>
-						<span class="text-xs">{items[tabs[activeTabIndex]]?.length ?? 0} items</span>
+						<span>{config.tabs[activeTabIndex]?.label}</span>
+						<span class="text-xs">{config.tabs[activeTabIndex]?.items.length ?? 0} items</span>
 					</div>
 					<div class="overflow-auto">
 						<ul>
-							{#each items[tabs[activeTabIndex]] as item, idx}
+							{#each config.tabs[activeTabIndex]?.items ?? [] as item, idx}
 								<li
 									class="cursor-default border-b border-neutral-800 px-3 py-2 last:border-b-0"
 									class:bg-neutral-800={idx === selectedIndex}
@@ -177,7 +157,7 @@
 									on:mouseenter={() => (selectedIndex = idx)}
 								>
 									{idx === selectedIndex ? '➜ ' : '  '}
-									{item}
+									{item.label}
 								</li>
 							{/each}
 						</ul>
@@ -192,16 +172,14 @@
 						Details
 					</div>
 					<div class="p-4 text-sm leading-relaxed">
-						<div class="mb-2">
-							<span class="text-neutral-400">Selected:</span>
-							<span class="ml-2 text-neutral-200"
-								>{items[tabs[activeTabIndex]]?.[selectedIndex] ?? '—'}</span
-							>
-						</div>
-						<p class="text-neutral-400">
-							Terminal-style profile page inspired by spotify-tui. Use h/j/k/l or arrows to
-							navigate. Enter to dive in. Tab to switch column. q does nothing.
-						</p>
+						{#if config.tabs[activeTabIndex]?.items[selectedIndex]?.detail}
+							<svelte:component
+								this={config.tabs[activeTabIndex].items[selectedIndex].detail}
+								meta={config.tabs[activeTabIndex].items[selectedIndex].meta}
+							/>
+						{:else}
+							<div class="text-neutral-400">No details for this item.</div>
+						{/if}
 					</div>
 				</div>
 			</section>
