@@ -5,7 +5,6 @@ export type TuiItemId = string;
 export interface TuiItem {
   id: TuiItemId;
   label: string;
-  // Allow any Svelte component (with any props) for flexible details
   detail?: Component<any>;
   meta?: unknown;
 }

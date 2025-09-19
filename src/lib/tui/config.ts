@@ -1,59 +1,54 @@
 import type { TuiConfig } from './types';
-import OverviewRecentlyPlayed from './details/OverviewRecentlyPlayed.svelte';
-import PlaylistDetails from './details/PlaylistDetails.svelte';
+import IdentificationDetails from './details/IdentificationDetails.svelte';
+import SocialsDetails from './details/SocialsDetails.svelte';
+import ProjectDetails from './details/ProjectDetails.svelte';
 
 export const tuiConfig: TuiConfig = {
   tabs: [
     {
       id: 'overview',
-      label: 'Overview',
+      label: 'overview',
       items: [
         {
-          id: 'recently-played',
-          label: 'Recently Played',
-          detail: OverviewRecentlyPlayed,
+          id: 'identification',
+          label: 'identification',
+          detail: IdentificationDetails,
           meta: {
-            description: 'Your recent listening activity',
-            tracks: [
-              { artist: 'Tycho', title: 'Awake' },
-              { artist: 'Nils Frahm', title: 'Says' },
-              { artist: 'Boards of Canada', title: 'Dayvan Cowboy' }
+            displayName: 'veygax',
+            email: 'veyga@veygax.dev',
+            sshKey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKNY+/G4U9emqPcGFsAnUZGKbWtWP0wjbyzkH6TqIYUA'
+          }
+        },
+        {
+          id: 'socials',
+          label: 'socials',
+          detail: SocialsDetails,
+          meta: {
+            socials: [
+              { platform: 'github', handle: '@veygax' },
+              { platform: 'x', handle: '@veygax' },
+              { platform: 'mastodon', handle: '@veygax@infosec.exchange' },
+              { platform: 'codeberg', handle: '@veygax' }
             ]
           }
         }
       ]
     },
     {
-      id: 'playlists',
-      label: 'Playlists',
+      id: 'projects',
+      label: 'projects',
       items: [
         {
-          id: 'deep-focus',
-          label: 'Deep Focus',
-          detail: PlaylistDetails,
-          meta: { description: 'Ambient electronica to focus', tracks: 64, followers: 12034 }
-        },
-        { id: 'coding-mode', label: 'Coding Mode', detail: PlaylistDetails, meta: { tracks: 48, followers: 8421 } },
-        { id: 'jazz-vibes', label: 'Jazz Vibes', detail: PlaylistDetails, meta: { tracks: 57, followers: 4310 } }
-      ]
-    },
-    {
-      id: 'following',
-      label: 'Following',
-      items: [
-        { id: 'alice', label: '@alice' },
-        { id: 'bob', label: '@bob' },
-        { id: 'carol', label: '@carol' }
-      ]
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      items: [
-        { id: 'profile', label: 'Profile' },
-        { id: 'appearance', label: 'Appearance' },
-        { id: 'shortcuts', label: 'Shortcuts' },
-        { id: 'about', label: 'About' }
+          id: 'project-website',
+          label: 'personal website',
+          detail: ProjectDetails,
+          meta: {
+            name: 'personal website',
+            description: 'the current website you\'re on, inspired by tui',
+            url: 'https://veygax.dev',
+            stack: ['sveltekit', 'tailwind', 'typescript']
+          }
+        }
       ]
     }
   ]

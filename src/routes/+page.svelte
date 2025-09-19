@@ -111,7 +111,7 @@
 			<section class="col-span-2">
 				<div class="rounded border border-neutral-700">
 					<div class="border-b border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-400">
-						Sections
+						sections
 					</div>
 					<ul>
 						{#each config.tabs as tab, i}
@@ -169,7 +169,7 @@
 			<section class="col-span-5">
 				<div class="flex h-[70vh] flex-col rounded border border-neutral-700">
 					<div class="border-b border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-400">
-						Details
+						details
 					</div>
 					<div class="p-4 text-sm leading-relaxed">
 						{#if config.tabs[activeTabIndex]?.items[selectedIndex]?.detail}
@@ -178,7 +178,7 @@
 								meta={config.tabs[activeTabIndex].items[selectedIndex].meta}
 							/>
 						{:else}
-							<div class="text-neutral-400">No details for this item.</div>
+							<div class="text-neutral-400">no details for this item.</div>
 						{/if}
 					</div>
 				</div>
