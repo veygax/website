@@ -1,3 +1,7 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+a[rel="me"][href="https://infosec.exchange/@veygax"] {
+  display: none;
+}
